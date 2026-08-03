@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 import argparse
-from google.genai import types
 
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -17,14 +16,15 @@ def main():
     base_url="https://openrouter.ai/api/v1",
     api_key=api_key,
     )
-    # prompt = "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
-    response = client.chat.completions.create(model = "openrouter/free",messages = args.user_prompt)
-    if response.usage is not None:
+    messages = [
+    {"role": "user", "content": args.user_prompt},
+    ]
+    # print(f"Verbose: {args.verbose}")
+    response = client.chat.completions.create(model = "openrouter/free",messages = messages)
+    if args.verbose:
+        print(f"User prompt: {args.user_prompt}")
         print(f"Prompt tokens: {response.usage.prompt_tokens}")
         print(f"Response tokens: {response.usage.completion_tokens}")
-    print(f"User prompt: Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum.")
-    print(f"Prompt tokens: {response.usage.prompt_tokens}")
-    print(f"Response tokens: {response.usage.completion_tokens}")
     print(f"Response: {response.choices[0].message.content}")
 
 
