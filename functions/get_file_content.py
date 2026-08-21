@@ -1,6 +1,23 @@
 import os
 from config import MAX_CHARS
 
+schema_get_files_info = {
+    "type": "function",
+    "function": {
+        "name": "get_files_content",
+        "description": "Lists files in a specified directory relative to the working directory, providing file size and directory status",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "directory": {
+                    "type": "string",
+                    "description": "Directory path to list files from, relative to the working directory (default is the working directory itself)",
+                },
+            },
+        },
+    },
+}
+
 def get_file_content(working_directory: str, file_path: str) -> str:
     try:
         # print(f'Checking validity for {file_path} and {working_directory}')
