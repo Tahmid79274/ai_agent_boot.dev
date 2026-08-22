@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import argparse
 from prompts import system_prompt
-from call_function import available_functions
+from call_function import available_functions, call_function
 
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -32,8 +32,13 @@ def main():
     #     print(f"Response tokens: {response.usage.completion_tokens}")
     if response.choices[0].message.tool_calls != None or len(response.choices[0].message.tool_calls) > 0:
         for tool_call in response.choices[0].message.tool_calls:
-            function_args = json.loads(tool_call.function.arguments or "{}")
-            print(f"Calling function: {tool_call.function.name}({function_args})")
+            # function_args = json.loads(tool_call.function.arguments or "{}")
+            result_message = call_function(tool_call,args.verbose)
+            if result_message['content'] == None:
+                raise Exception('Non Empty not allowed')
+            if args.verbose:
+                print(f"-> {result_message['content']}")
+            # print(f"Calling function: {tool_call.function.name}({function_args})")
     print(f"{response.choices[0].message.content}")
 
 

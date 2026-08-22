@@ -3,16 +3,21 @@ import os
 schema_write_file = {
     "type": "function",
     "function": {
-        "name": "schema_write_file",
-        "description": "Lists files in a specified directory relative to the working directory, providing file size and directory status",
+        "name": "write_file",
+        "description": "Writes text content to a specified file within the working directory (overwriting if the file exists)",
         "parameters": {
             "type": "object",
             "properties": {
-                "directory": {
+                "file_path": {
                     "type": "string",
-                    "description": "Directory path to list files from, relative to the working directory (default is the working directory itself)",
+                    "description": "Path to the file to write, relative to the working directory",
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Text content to write to the file",
                 },
             },
+            "required": ["file_path", "content"],
         },
     },
 }
